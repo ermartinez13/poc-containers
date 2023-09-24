@@ -3,14 +3,16 @@ import { createProxyMiddleware } from "http-proxy-middleware";
 
 const app = express();
 const port = 3000;
+const fooHostname = process.env.FOO_HOSTNAME || "localhost";
+const barHostname = process.env.BAR_HOSTNAME || "localhost";
 const fooProxy = createProxyMiddleware({
-  target: "http://localhost:3001",
+  target: `http://${fooHostname}:3001`,
   pathRewrite: {
     "^/foo": "/",
   },
 });
 const barProxy = createProxyMiddleware({
-  target: "http://localhost:3002",
+  target: `http://${barHostname}:3002`,
   pathRewrite: {
     "^/bar": "/",
   },

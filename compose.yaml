@@ -1,0 +1,35 @@
+services:
+  gateway:
+    image: node:20-alpine
+    # `sh` command invokes shell interpreter, `-c` is option that tells shell to read command or script from next argument
+    command: sh -c "npm install && npm run dev"
+    # map (IP, port) from host to container port
+    ports:
+      - 127.0.0.1:3000:3000
+    # sets working directory for cmd, copy instructions
+    working_dir: /gateway
+    # share directory from host filesystem into container (bind mount)
+    volumes:
+      - ./gateway:/gateway
+    # set environment variables in container
+    environment:
+      FOO_HOSTNAME: foo
+      BAR_HOSTNAME: bar
+  # name of service automatically becomes network alias
+  foo:
+    image: node:20-alpine
+    command: sh -c "npm install && npm run dev"
+    ports:
+      - "3001"
+    working_dir: /foo
+    volumes:
+      - ./foo:/foo
+  # name of service automatically becomes network alias
+  bar:
+    image: node:20-alpine
+    command: sh -c "npm install && npm run dev"
+    ports:
+      - "3002"
+    working_dir: /bar
+    volumes:
+      - ./bar:/bar
