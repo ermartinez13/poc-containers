@@ -1,5 +1,6 @@
 services:
   gateway:
+    # specifies image to start container from
     image: node:20-alpine
     # `sh` command invokes shell interpreter, `-c` is option that tells shell to read command or script from next argument
     command: sh -c "npm install && npm run dev"
@@ -17,19 +18,8 @@ services:
       BAR_HOSTNAME: bar
   # name of service automatically becomes network alias
   foo:
-    image: node:20-alpine
-    command: sh -c "npm install && npm run dev"
-    ports:
-      - "3001"
-    working_dir: /foo
-    volumes:
-      - ./foo:/foo
+    # path is used to look for a Dockerfile at root of the directory, can be relative or absolute
+    build: ./foo
   # name of service automatically becomes network alias
   bar:
-    image: node:20-alpine
-    command: sh -c "npm install && npm run dev"
-    ports:
-      - "3002"
-    working_dir: /bar
-    volumes:
-      - ./bar:/bar
+    build: ./bar
